@@ -1,0 +1,70 @@
+<%- include('../partials/header') %>
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0"><i class="fa-solid fa-pen-to-square me-2"></i>Editar Ficha: <%= mascota.nombre %></h4>
+            </div>
+            <div class="card-body p-4">
+                
+                <% if (typeof errores!== 'undefined') { %>
+                    <div class="alert alert-danger shadow-sm border-0 mb-4">
+                        <p class="fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i>Hay errores en el formulario:</p>
+                        <ul class="mb-0">
+                            <% errores.forEach(error => { %>
+                                <li><%= error.msg %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% } %>
+
+                <form action="/mascotas/actualizar/<%= mascota.id %>" method="POST">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label fw-bold">Nombre del Paciente</label>
+                            <input type="text" name="nombre" class="form-control" value="<%= mascota.nombre %>" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Especie</label>
+                            <select name="especie" class="form-select">
+                                <option value="Perro" <%= mascota.especie === 'Perro'? 'selected' : '' %>>🐶 Perro</option>
+                                <option value="Gato" <%= mascota.especie === 'Gato'? 'selected' : '' %>>🐱 Gato</option>
+                                <option value="Otro" <%= mascota.especie === 'Otro'? 'selected' : '' %>>🐾 Otro</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Raza</label>
+                            <input type="text" name="raza" class="form-control" value="<%= mascota.raza %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Edad (Opcional)</label>
+                            <input type="text" name="edad" class="form-control" placeholder="Ej: 3 años o 5 meses"
+                                value="<%= typeof datos!== 'undefined'? datos.edad : (typeof mascota!== 'undefined'? mascota.edad : '') %>">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Síntomas (Obligatorio)</label>
+                            <textarea name="sintomas" class="form-control" rows="2"
+                                required><%= typeof datos!== 'undefined'? datos.sintomas : (typeof mascota!== 'undefined'? mascota.sintomas : '') %></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Diagnóstico (Opcional)</label>
+                            <textarea name="diagnostico" class="form-control" rows="2"
+                                placeholder="Dejar vacío si está pendiente"><%= typeof datos!== 'undefined'? datos.diagnostico : (typeof mascota!== 'undefined'? mascota.diagnostico : '') %></textarea>
+                        </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success flex-grow-1 btn-lg shadow-sm">
+                            <i class="fa-solid fa-check me-2"></i>Actualizar Información
+                        </button>
+                        <a href="/mascotas" class="btn btn-outline-secondary btn-lg">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

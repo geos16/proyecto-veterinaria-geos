@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veterinaria Geos - Gestión Clínica</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.2/flatly/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fa-solid fa-paw me-2"></i>Geos
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarGeos">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarGeos">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <% if (user) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/mascotas">
+                                <i class="fa-solid fa-paw me-1"></i> Pacientes
+                            </a>
+                        </li>
+
+                        <% if (user.role === 'admin') { %>
+                            <li class="nav-item ms-lg-2">
+                                <a class="nav-link" href="/usuarios">
+                                    <i class="fa-solid fa-users me-1"></i> Personal
+                                </a>
+                            </li>
+                        <% } %>
+
+                        <li class="nav-item d-none d-lg-block mx-2 text-white-50">|</li>
+
+                        <li class="nav-item">
+                            <span class="nav-link text-white fw-semibold">
+                                <i class="fa-solid fa-circle-user me-1"></i> <%= user.username %>
+                            </span>
+                        </li>
+
+                        <li class="nav-item ms-lg-3">
+                            <a class="btn btn-danger btn-sm px-3 fw-bold shadow-sm" href="/logout">
+                                <i class="fa-solid fa-power-off me-1"></i> Salir
+                            </a>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item">
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">

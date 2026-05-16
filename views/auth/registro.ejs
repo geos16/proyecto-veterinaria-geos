@@ -1,0 +1,45 @@
+<%- include('../partials/header') %>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-success text-white text-center py-4" style="border-radius: 15px 15px 0 0;">
+                <i class="fa-solid fa-user-plus fa-3x mb-3"></i>
+                <h3 class="fw-bold mb-0">Registrar Nuevo Veterinario</h3>
+                <p class="mb-0 opacity-75">Panel de Gestión de Recursos Humanos</p>
+            </div>
+            <div class="card-body p-4">
+                <form action="/registro" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold"><i class="fa-solid fa-user-tag me-2"></i>Nombre de Usuario</label>
+                        <input type="text" name="username" class="form-control" placeholder="Ej: dr_perez" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold"><i class="fa-solid fa-key me-2"></i>Contraseña temporal</label>
+                        <input type="password" name="password" class="form-control" placeholder="Mínimo 6 caracteres" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold"><i class="fa-solid fa-shield-dog me-2"></i>Rol asignado</label>
+                        <select name="role" class="form-select border-primary shadow-sm">
+                            <option value="user">🩺 Veterinario (Consulta)</option>
+                            <option value="admin">🔐 Administrador (Gestión Total)</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm">
+                            <i class="fa-solid fa-check-circle me-1"></i> Finalizar Registro
+                        </button>
+                        <a href="/usuarios" class="btn btn-outline-secondary">
+                            <i class="fa-solid fa-xmark me-1"></i> Cancelar y Volver
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

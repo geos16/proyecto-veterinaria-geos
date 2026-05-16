@@ -1,0 +1,93 @@
+<%- include('../partials/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-secondary"><i class="fa-solid fa-paw me-2"></i>Pacientes</h2>
+    <a href="/mascotas/nuevo" class="btn btn-success shadow-sm"><i class="fa-solid fa-plus me-1"></i> Nueva Mascota</a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="ps-4">Paciente</th>
+                    <th>Especie</th>
+                    <th>Raza</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% mascotas.forEach(mascota => { %>
+                    <tr>
+                        <td class="ps-4">
+                            <span class="fw-bold text-primary"><%= mascota.nombre %></span>
+                        </td>
+                        <td>
+                            <% 
+                                let claseColor = 'bg-secondary';
+                                if(mascota.especie === 'Perro') claseColor = 'bg-perro';
+                                else if(mascota.especie === 'Gato') claseColor = 'bg-gato';
+                                else if(mascota.especie === 'Otro') claseColor = 'bg-otro';
+                            %>
+                            <span class="badge <%= claseColor %> px-3 py-2 shadow-sm"><%= mascota.especie %></span>
+                        </td>
+                        <td class="text-muted small"><%= mascota.raza %></td>
+                        <td>
+                            <% if (mascota.diagnostico && mascota.diagnostico.trim()!== "") { %>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2">
+                                    <i class="fa-solid fa-check-circle me-1"></i> Diagnosticado
+                                </span>
+                            <% } else { %>
+                                <span class="badge bg-warning-subtle text-dark border border-warning-subtle px-3 py-2">
+                                    <i class="fa-solid fa-clock me-1"></i> Pendiente
+                                </span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <div class="btn-group-geos">
+                                <a href="/mascotas/detalle/<%= mascota.id %>" class="btn btn-sm btn-outline-secondary btn-view-custom" title="Ver Ficha">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                                <% if (user && user.role === 'admin') { %>
+                                    <a href="/mascotas/editar/<%= mascota.id %>" class="btn btn-sm btn-outline-primary btn-edit-custom" title="Editar">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                    <form action="/mascotas/borrar/<%= mascota.id %>" method="POST" class="d-inline" id="form-borrar-<%= mascota.id %>">
+                                        <button type="button" class="btn btn-sm btn-outline-danger btn-delete-custom" 
+                                                onclick="confirmarEliminar('<%= mascota.id %>', '<%= mascota.nombre %>')" title="Eliminar">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                <% } %>
+                            </div>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+function confirmarEliminar(id, nombre) {
+    Swal.fire({
+        title: '¿Dar de baja a ' + nombre + '?',
+        text: "Esta ficha médica será eliminada permanentemente.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e74c3c',
+        cancelButtonColor: '#95a5a6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+        borderRadius: '15px'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('form-borrar-' + id).submit();
+        }
+    })
+}
+</script>
+
+<%- include('../partials/footer') %>

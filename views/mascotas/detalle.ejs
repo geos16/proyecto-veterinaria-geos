@@ -1,0 +1,98 @@
+<%- include('../partials/header') %>
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow-lg border-0 overflow-hidden">
+            <% 
+                // Selección dinámica de color según especie para consistencia visual
+                let claseColor = 'bg-secondary';
+                if(mascota.especie === 'Perro') claseColor = 'bg-perro';
+                else if(mascota.especie === 'Gato') claseColor = 'bg-gato';
+                else if(mascota.especie === 'Otro') claseColor = 'bg-otro';
+            %>
+            
+            <div class="card-header <%= claseColor %> text-white py-4 text-center">
+                <i class="fa-solid fa-file-waveform fa-3x mb-2"></i>
+                <h2 class="mb-0 fw-bold text-uppercase"><%= mascota.nombre %></h2>
+            </div>
+
+            <div class="card-body p-5">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <h5 class="text-primary border-bottom pb-2">Información del Paciente</h5>
+                        <p><strong>Edad:</strong>
+                            <%= mascota.edad || 'No especificada' %>
+                        </p>
+                        <p><strong>Raza:</strong>
+                            <%= mascota.raza %>
+                        </p>
+                        <p><strong>Especie:</strong>
+                            <%= mascota.especie %>
+                        </p>
+                        <p><strong>Síntomas:</strong> <br><span class="text-muted">
+                                <%= mascota.sintomas %>
+                            </span></p>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <h5 class="text-primary border-bottom pb-2">Evaluación Médica</h5>
+                        <p><strong>Diagnóstico:</strong> <br>
+                            <% if (mascota.diagnostico && mascota.diagnostico.trim()!=="" ) { %>
+                                <span class="text-success fw-bold"><i class="fa-solid fa-check-circle"></i>
+                                    <%= mascota.diagnostico %>
+                                </span>
+                                <% } else { %>
+                                    <span class="badge bg-warning text-dark"><i class="fa-solid fa-clock"></i> PENDIENTE</span>
+                                    <% } %>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-top d-flex justify-content-end gap-2">
+                    <% if (user && user.role === 'admin') { %>
+                        <a href="/mascotas/editar/<%= mascota.id %>" class="btn btn-primary px-4 shadow-sm">
+                            <i class="fa-solid fa-pen-to-square me-2"></i>Modificar
+                        </a>
+                        <form action="/mascotas/borrar/<%= mascota.id %>" method="POST" id="form-borrar-<%= mascota.id %>" class="d-inline">
+                            <button type="button" class="btn btn-danger px-4 shadow-sm" 
+                                    onclick="confirmarEliminar('<%= mascota.id %>', '<%= mascota.nombre %>')">
+                                <i class="fa-solid fa-trash-can me-2"></i>Dar de Baja
+                            </button>
+                        </form>
+                    <% } %>
+                    
+                    <a href="/mascotas" class="btn btn-outline-secondary px-4 shadow-sm">
+                        <i class="fa-solid fa-arrow-left me-2"></i>Regresar
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card-footer bg-light text-center py-3 border-0">
+                <small class="text-muted italic">Veterinaria Geos - Sistema de Control Interno</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Confirmación profesional unificada para bajas en el sistema
+function confirmarEliminar(id, nombre) {
+    Swal.fire({
+        title: '¿Confirmar baja de ' + nombre + '?',
+        text: "Se eliminará el historial clínico permanentemente del sistema.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e74c3c',
+        cancelButtonColor: '#95a5a6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+        borderRadius: '15px'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('form-borrar-' + id).submit();
+        }
+    })
+}
+</script>
+
+<%- include('../partials/footer') %>
